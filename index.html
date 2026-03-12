@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAAN BÖRGELING // PORTFOLIO</title>
+<style>
+@font-face { font-family: 'Maratype2'; src: url('Maratype2.woff2') format('woff2'); font-weight: normal; }
+@font-face { font-family: 'DOTMatrix'; src: url('DOTMATRI.woff2') format('woff2'); font-weight: normal; }
+@font-face { font-family: 'DOTMatrix'; src: url('DOTMBold.woff2') format('woff2'); font-weight: bold; }
+@font-face { font-family: 'UAV-OSD-Mono'; src: url('UAV-OSD-Mono.woff2') format('woff2'); font-weight: normal; }
+@font-face { font-family: 'UAV-OSD-Sans'; src: url('UAV-OSD-Sans-Mono.woff2') format('woff2'); font-weight: normal; }
+@font-face { font-family: 'W3IP'; src: url('w3-ip.woff2') format('woff2'); font-weight: normal; }
+</style>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green: #C2FE0B;
+  --green-dim: #6d9000;
+  --black: #000000;
+  --deep: #080808;
+  --surface: #101010;
+  --border: #1c1c1c;
+  --text: #ffffff;
+  --muted: #4a4a4a;
+  --red: #FF1A1A;
+  --cyan: #00FFEA;
+}
+
+/* ─── CURSOR ─── */
+*, *::before, *::after { cursor: none !important; }
+
+#cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: #C2FE0B;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%,-50%);
+  transition: width .12s, height .12s, background .12s;
+  opacity: 0;
+}
+
+#cursor-ring {
+  position: fixed;
+  width: 32px; height: 32px;
+  border: 2px solid #C2FE0B;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%,-50%);
+  opacity: 0;
+}
+
+body:has(a:hover) #cursor,
+body:has(button:hover) #cursor { width: 18px; height: 18px; background: #C2FE0B; }
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring { width: 48px; height: 48px; }
+body:has(.work-card:hover) #cursor { width: 56px; height: 56px; background: #C2FE0B; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'UAV-OSD-Mono', monospace;
+  overflow-x: hidden;
+  padding-right: 28px;
+}
+
+/* SCANLINES */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px);
+  pointer-events: none;
+  z-index: 9000;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 500;
+  height: 48px;
+  background: rgba(0,0,0,0.92);
+  border-bottom: 2px solid var(--green);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+}
+
+.nav-logo {
+  height: 100%;
+  padding: 0 20px;
+  background: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-right: 2px solid var(--green);
+}
+
+.nav-logo-text {
+  font-family: 'Maratype2', sans-serif;
+  font-size: 20px;
+  letter-spacing: 4px;
+  color: var(--black);
+}
+
+.nav-logo-sub {
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: rgba(0,0,0,0.55);
+  font-weight: 500;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 28px;
+  flex: 1;
+}
+
+.nav-links a {
+  font-family: 'DOTMatrix', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .15s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 1px;
+  background: var(--green);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .2s ease;
+}
+
+.nav-links a:hover { color: var(--green); }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+.nav-right {
+  margin-left: auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s ease infinite;
+}
+
+.nav-status-text {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--green);
+}
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* ─── HERO ─── */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 0 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: var(--black);
+  overflow: hidden;
+}
+
+/* Generative grid lines */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(194,254,11,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(194,254,11,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Rotating diagonal accent */
+.hero-diag {
+  position: absolute;
+  top: -20%; left: 50%;
+  width: 600px; height: 600px;
+  border: 1px solid rgba(194,254,11,0.06);
+  transform: rotate(25deg);
+  animation: slowSpin 30s linear infinite;
+}
+
+.hero-diag2 {
+  position: absolute;
+  top: 10%; left: 20%;
+  width: 300px; height: 300px;
+  border: 1px solid rgba(194,254,11,0.04);
+  transform: rotate(-15deg);
+  animation: slowSpin 20s linear infinite reverse;
+}
+
+@keyframes slowSpin { to { transform: rotate(385deg); } }
+
+/* Large ghost text */
+.marathon-bar {
+  position: fixed;
+  right: 0; top: 48px; bottom: 0;
+  width: 28px;
+  background: #5200FF;
+  z-index: 490;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.marathon-bar-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: marathonScroll 35s linear infinite;
+  position: absolute;
+  top: 0;
+}
+
+@keyframes marathonScroll {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-33.333%); }
+}
+
+.marathon-bar-text {
+  font-family: 'UAV-OSD-Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: #C2FE0B;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  white-space: nowrap;
+  padding: 12px 0;
+  opacity: 0.9;
+}
+
+.marathon-bar-cross {
+  color: #C2FE0B;
+  font-size: 8px;
+  opacity: 0.6;
+  padding: 4px 0;
+  writing-mode: vertical-rl;
+}
+
+.marathon-bar-dot {
+  width: 4px; height: 4px;
+  background: #C2FE0B;
+  border-radius: 50%;
+  margin: 8px 0;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 60px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 60px;
+}
+
+.hero-left { display: flex; flex-direction: column; }
+
+/* ─── HUD PANEL ─── */
+.hero-hud {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 340px;
+  max-width: 400px;
+  margin-bottom: 320px;
+  animation: fadeUp .8s .6s ease both;
+}
+
+@media (min-width: 1100px) {
+  .hero-hud { display: flex; }
+}
+
+.hud-block {
+  border: 1px solid rgba(194,254,11,0.15);
+  padding: 16px 20px;
+  position: relative;
+}
+
+.hud-block::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: 0;
+  width: 40px; height: 2px;
+  background: var(--green);
+}
+
+.hud-label {
+  font-family: 'UAV-OSD-Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(194,254,11,0.5);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.hud-value {
+  font-family: 'UAV-OSD-Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--green);
+}
+
+.hud-value.dim { color: rgba(194,254,11,0.4); font-size: 11px; }
+
+.hud-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+
+.hud-row:last-child { margin-bottom: 0; }
+
+.hud-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hud-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hud-bar-label {
+  font-family: 'UAV-OSD-Mono', monospace;
+  font-size: 9px;
+  color: rgba(194,254,11,0.5);
+  letter-spacing: 2px;
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.hud-bar-track {
+  flex: 1;
+  height: 2px;
+  background: rgba(194,254,11,0.1);
+  position: relative;
+}
+
+.hud-bar-fill {
+  position: absolute;
+  top: 0; left: 0; height: 100%;
+  background: var(--green);
+  transition: width 2s ease;
+}
+
+.hud-status-dot {
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-right: 8px;
+  animation: pulse 2s infinite;
+}
+
+.hud-ticker {
+  font-family: 'UAV-OSD-Mono', monospace;
+  font-size: 8px;
+  color: rgba(194,254,11,0.35);
+  letter-spacing: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 1px solid rgba(194,254,11,0.08);
+  padding-top: 8px;
+  margin-top: 4px;
+}
+
+.hud-blink {
+  animation: pulse 1.2s step-end infinite;
+}
+
+.hero-eyebrow {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  animation: fadeUp .8s .2s ease both;
+}
+
+.hero-name br { display: block; margin-bottom: 0.08em; }
+.hero-name {
+  font-family: 'Maratype2', sans-serif;
+  font-size: clamp(72px, 12vw, 160px);
+  letter-spacing: 4px;
+  line-height: 1.05;
+  color: var(--text);
+  animation: fadeUp .8s .3s ease both;
+}
+
+.hero-name span { color: var(--green); }
+.hero-name-green { color: var(--green); }
+
+.hero-desc {
+  margin-top: 24px;
+  max-width: 480px;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  animation: fadeUp .8s .4s ease both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 36px;
+  animation: fadeUp .8s .5s ease both;
+}
+
+.btn {
+  font-family: 'DOTMatrix', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border: none;
+  transition: all .15s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary { background: var(--green); color: var(--black); }
+.btn-primary:hover { opacity: .85; transform: translate(2px,-2px); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { border-color: var(--green); color: var(--green); }
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 24px; right: 60px;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: fadeUp .8s .7s ease both;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(var(--green), transparent);
+  animation: scrollPulse 2s ease infinite;
+}
+
+@keyframes scrollPulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:none} }
+
+/* ─── SECTION SHARED ─── */
+section { padding: 100px 60px; }
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 20px;
+}
+
+.section-label {
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.section-title {
+  font-family: 'Maratype2', sans-serif;
+  font-size: clamp(36px, 5vw, 64px);
+  letter-spacing: 4px;
+  line-height: 1;
+}
+
+/* ─── FILTER BAR ─── */
+.filter-bar {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  font-family: 'DOTMatrix', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  transition: all .15s;
+}
+
+.filter-btn:hover { color: var(--text); border-color: #333; }
+.filter-btn.active { background: var(--green); color: var(--black); border-color: var(--green); }
+
+/* ─── WORK GRID ─── */
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 3px;
+}
+
+.work-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: transform .2s ease, border-color .2s ease;
+}
+
+.work-card:hover { border-color: var(--green); z-index: 2; }
+.work-card:hover .work-overlay { opacity: 1; }
+.work-card:hover .work-img { transform: scale(1.05); filter: brightness(0.5); }
+.work-card:hover .work-num { opacity: 1; }
+
+.work-card.col-8 { grid-column: span 8; }
+.work-card.col-4 { grid-column: span 4; }
+.work-card.col-6 { grid-column: span 6; }
+.work-card.col-5 { grid-column: span 5; }
+.work-card.col-7 { grid-column: span 7; }
+
+.work-img-wrap {
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  position: relative;
+}
+
+.work-card.col-8 .work-img-wrap { aspect-ratio: 16/9; }
+.work-card.col-7 .work-img-wrap { aspect-ratio: 16/9; }
+
+.work-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .4s ease, filter .4s ease;
+  display: block;
+}
+
+/* Placeholder art using canvas-like CSS patterns */
+.work-img.art-1 { background: radial-gradient(ellipse at 20% 80%, #1a3a00 0%, #000 60%), linear-gradient(135deg, #0d2000 0%, #000 100%); }
+.work-img.art-2 { background: linear-gradient(45deg, #000 25%, #0a1500 50%, #000 75%); }
+.work-img.art-3 { background: radial-gradient(circle at 70% 30%, #001a10 0%, #000 70%); }
+.work-img.art-4 { background: linear-gradient(160deg, #000 30%, #0c1f00 60%, #000 90%); }
+.work-img.art-5 { background: conic-gradient(from 45deg at 50% 50%, #000, #0d2000, #000, #0a1500, #000); }
+.work-img.art-6 { background: radial-gradient(ellipse at 80% 20%, #001505 0%, #000 50%); }
+.work-img.art-7 { background: repeating-linear-gradient(60deg, #000 0%, #000 8%, #050f00 8%, #050f00 16%); }
+.work-img.art-8 { background: radial-gradient(circle at 30% 70%, #0a1f00 0%, #000 60%); }
+
+/* Art overlays for visual interest */
+.work-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+}
+
+.work-img.art-1::after { background: repeating-linear-gradient(0deg, transparent 0, transparent 20px, rgba(194,254,11,0.03) 20px, rgba(194,254,11,0.03) 21px); }
+.work-img.art-3::after { background: repeating-linear-gradient(90deg, transparent 0, transparent 40px, rgba(194,254,11,0.02) 40px, rgba(194,254,11,0.02) 41px); }
+.work-img.art-5::after { background: repeating-conic-gradient(rgba(194,254,11,0.04) 0deg, transparent 5deg); }
+
+.work-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity .3s ease;
+  z-index: 2;
+}
+
+.work-title {
+  font-family: 'Maratype2', sans-serif;
+  font-size: 22px;
+  letter-spacing: 3px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.work-meta {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--green);
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+.work-num {
+  position: absolute;
+  top: 14px; right: 14px;
+  font-family: 'Maratype2', sans-serif;
+  font-size: 44px;
+  color: rgba(194,254,11,0.15);
+  letter-spacing: 2px;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+
+.work-tag {
+  display: inline-block;
+  font-family: 'DOTMatrix', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 2px 7px;
+  border: 1px solid var(--green);
+  color: var(--green);
+  text-transform: uppercase;
+  margin-top: 8px;
+  align-self: flex-start;
+}
+
+/* hidden state for filtering */
+.work-card { transition: opacity .3s ease, transform .3s ease, border-color .2s ease; }
+.work-card.hidden { opacity: 0; pointer-events: none; transform: scale(0.97); }
+
+/* ─── ABOUT ─── */
+#about {
+  background: var(--deep);
+  border-top: 2px solid var(--border);
+  border-bottom: 2px solid var(--border);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.about-left {}
+
+.about-text {
+  font-size: 13px;
+  line-height: 2;
+  color: #888;
+  letter-spacing: 0.3px;
+}
+
+.about-text p + p { margin-top: 16px; }
+
+.about-text strong { color: var(--green); font-weight: 500; }
+
+.about-stats {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--border);
+}
+
+.about-stat {
+  background: var(--surface);
+  padding: 20px;
+}
+
+.stat-num {
+  font-family: 'Maratype2', sans-serif;
+  font-size: 48px;
+  letter-spacing: 2px;
+  color: var(--green);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.about-right {}
+
+.skills-list { display: flex; flex-direction: column; gap: 2px; }
+
+.skill-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: border-color .15s, background .15s;
+}
+
+.skill-row:hover { border-color: var(--green); background: rgba(194,254,11,0.03); }
+
+.skill-name {
+  font-family: 'DOTMatrix', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text);
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.skill-bar-track {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+  position: relative;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  background: var(--green);
+  transform-origin: left;
+  animation: growBar 1s ease both;
+}
+
+@keyframes growBar { from{transform:scaleX(0)} to{transform:scaleX(1)} }
+
+.skill-pct {
+  font-family: 'DOTMatrix', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green);
+  width: 36px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ─── SELECTED WORK / LIGHTBOX TRIGGER ─── */
+.marquee-strip {
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  padding: 10px 0;
+  white-space: nowrap;
+}
+
+.marquee-inner {
+  display: inline-flex;
+  gap: 40px;
+  animation: marquee 18s linear infinite;
+}
+
+.marquee-inner span {
+  font-family: 'DOTMatrix', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.marquee-inner span.accent { color: var(--green); }
+
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ─── CONTACT ─── */
+#contact {
+  border-top: 2px solid var(--green);
+  background: var(--black);
+  text-align: center;
+  padding: 100px 60px;
+}
+
+.contact-title {
+  font-family: 'Maratype2', sans-serif;
+  font-size: clamp(48px, 8vw, 100px);
+  letter-spacing: 6px;
+  line-height: 0.9;
+  color: var(--text);
+  margin-bottom: 24px;
+}
+
+.contact-title span { color: var(--green); }
+.contact-title-green { color: var(--green); }
+
+.contact-sub {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  margin-bottom: 48px;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.contact-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 32px;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: border-color .15s, background .15s;
+  min-width: 140px;
+}
+
+.contact-link:hover { border-color: var(--green); background: rgba(194,254,11,0.04); }
+
+.cl-label {
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.cl-val {
+  font-family: 'DOTMatrix', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+
+.contact-link:hover .cl-val { color: var(--green); }
+
+/* ─── FOOTER ─── */
+footer {
+  height: 48px;
+  background: var(--black);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--muted);
+}
+
+footer span { color: var(--green); }
+
+/* ─── LIGHTBOX ─── */
+#lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  background: rgba(0,0,0,0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+  backdrop-filter: blur(8px);
+}
+
+#lightbox.open { opacity: 1; pointer-events: all; }
+
+.lb-inner {
+  max-width: 900px;
+  width: 90vw;
+  position: relative;
+  transform: scale(.92);
+  transition: transform .3s ease;
+}
+
+#lightbox.open .lb-inner { transform: scale(1); }
+
+.lb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.lb-title {
+  font-family: 'Maratype2', sans-serif;
+  font-size: 28px;
+  letter-spacing: 4px;
+  color: var(--text);
+}
+
+.lb-meta { font-size: 10px; letter-spacing: 2px; color: var(--green); }
+
+.lb-close {
+  font-family: 'DOTMatrix', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  transition: all .15s;
+}
+
+.lb-close:hover { border-color: var(--red); color: var(--red); }
+
+.lb-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  position: relative;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.lb-img-fill {
+  width: 100%; height: 100%;
+  transition: transform .4s ease;
+}
+
+.lb-img:hover .lb-img-fill { transform: scale(1.03); }
+
+.lb-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.lb-desc { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; line-height: 1.6; max-width: 500px; }
+
+.lb-nav { display: flex; gap: 8px; }
+
+.lb-nav-btn {
+  font-family: 'DOTMatrix', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 8px 18px;
+  transition: all .15s;
+}
+
+.lb-nav-btn:hover { border-color: var(--green); color: var(--green); }
+
+/* ─── GLITCH text effect ─── */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  font-family: 'Maratype2', sans-serif;
+  font-size: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.glitch:hover::before {
+  color: var(--cyan);
+  opacity: .7;
+  animation: glitch1 .2s ease;
+  clip-path: polygon(0 20%, 100% 20%, 100% 45%, 0 45%);
+}
+
+.glitch:hover::after {
+  color: var(--red);
+  opacity: .5;
+  animation: glitch2 .2s ease .05s;
+  clip-path: polygon(0 55%, 100% 55%, 100% 80%, 0 80%);
+}
+
+@keyframes glitch1 { 0%{transform:translate(4px,0)} 50%{transform:translate(-4px,0)} 100%{transform:none;opacity:0} }
+@keyframes glitch2 { 0%{transform:translate(-4px,0)} 50%{transform:translate(4px,0)} 100%{transform:none;opacity:0} }
+
+/* corner decorations on panels */
+.corner-tl, .corner-br {
+  position: absolute;
+  width: 14px; height: 14px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.corner-tl {
+  top: 6px; left: 6px;
+  border-top: 2px solid var(--green);
+  border-left: 2px solid var(--green);
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.corner-br {
+  bottom: 6px; right: 6px;
+  border-bottom: 2px solid var(--green);
+  border-right: 2px solid var(--green);
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.work-card:hover .corner-tl,
+.work-card:hover .corner-br { opacity: 1; }
+</style>
+</head>
+
+<script>
+// ─── CURSOR — runs early ───
+window.addEventListener('DOMContentLoaded', () => {
+  const cur = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  if (!cur || !ring) return;
+  let mx = 0, my = 0, rx = 0, ry = 0, started = false;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cur.style.left = mx + 'px';
+    cur.style.top  = my + 'px';
+    if (!started) {
+      started = true;
+      rx = mx; ry = my;
+      cur.style.opacity  = '1';
+      ring.style.opacity = '1';
+    }
+  });
+
+  document.addEventListener('mouseleave', () => { cur.style.opacity = '0'; ring.style.opacity = '0'; started = false; });
+  document.addEventListener('mouseenter', () => { if (started) { cur.style.opacity = '1'; ring.style.opacity = '1'; } });
+
+  (function loop() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(loop);
+  })();
+});
+</script>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ─── MARATHON SIDEBAR BAR ─── -->
+<div class="marathon-bar">
+  <div class="marathon-bar-inner" id="marathon-inner">
+    <span class="marathon-bar-text">DAAN BORGELING</span>
+    <span class="marathon-bar-cross">+</span>
+    <span class="marathon-bar-text">BRAND ENGINEER</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">VISUAL ARTIST</span>
+    <span class="marathon-bar-cross">×</span>
+    <span class="marathon-bar-text">EST. 2025</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">AMSTERDAM NL</span>
+    <span class="marathon-bar-cross">+</span>
+    <span class="marathon-bar-text">ARCHIVE // PORTFOLIO</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">DAAN BORGELING</span>
+    <span class="marathon-bar-cross">+</span>
+    <span class="marathon-bar-text">BRAND ENGINEER</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">VISUAL ARTIST</span>
+    <span class="marathon-bar-cross">×</span>
+    <span class="marathon-bar-text">EST. 2025</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">AMSTERDAM NL</span>
+    <span class="marathon-bar-cross">+</span>
+    <span class="marathon-bar-text">ARCHIVE // PORTFOLIO</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">DAAN BORGELING</span>
+    <span class="marathon-bar-cross">+</span>
+    <span class="marathon-bar-text">BRAND ENGINEER</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">VISUAL ARTIST</span>
+    <span class="marathon-bar-cross">×</span>
+    <span class="marathon-bar-text">EST. 2025</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">AMSTERDAM NL</span>
+    <span class="marathon-bar-cross">+</span>
+    <span class="marathon-bar-text">ARCHIVE // PORTFOLIO</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">DAAN BORGELING</span>
+    <span class="marathon-bar-cross">+</span>
+    <span class="marathon-bar-text">BRAND ENGINEER</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">VISUAL ARTIST</span>
+    <span class="marathon-bar-cross">×</span>
+    <span class="marathon-bar-text">EST. 2025</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">AMSTERDAM NL</span>
+    <span class="marathon-bar-cross">+</span>
+    <span class="marathon-bar-text">ARCHIVE // PORTFOLIO</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">DAAN BORGELING</span>
+    <span class="marathon-bar-cross">+</span>
+    <span class="marathon-bar-text">BRAND ENGINEER</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">VISUAL ARTIST</span>
+    <span class="marathon-bar-cross">×</span>
+    <span class="marathon-bar-text">EST. 2025</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">AMSTERDAM NL</span>
+    <span class="marathon-bar-cross">+</span>
+    <span class="marathon-bar-text">ARCHIVE // PORTFOLIO</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">DAAN BORGELING</span>
+    <span class="marathon-bar-cross">+</span>
+    <span class="marathon-bar-text">BRAND ENGINEER</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">VISUAL ARTIST</span>
+    <span class="marathon-bar-cross">×</span>
+    <span class="marathon-bar-text">EST. 2025</span>
+    <span class="marathon-bar-dot"></span>
+    <span class="marathon-bar-text">AMSTERDAM NL</span>
+    <span class="marathon-bar-cross">+</span>
+    <span class="marathon-bar-text">ARCHIVE // PORTFOLIO</span>
+    <span class="marathon-bar-dot"></span>
+  </div>
+</div>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="nav-logo">
+    <img src="DBLogo.svg" alt="DB Logo" style="height:28px;width:28px;filter:brightness(0);flex-shrink:0;">
+    <div>
+      <div class="nav-logo-text">ARCHIVE</div>
+      <div class="nav-logo-sub">// PORTFOLIO</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="nav-right">
+    <div class="nav-status-dot"></div>
+    <div class="nav-status-text">AVAILABLE FOR WORK</div>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="hero-diag"></div>
+    <div class="hero-diag2"></div>
+  </div>
+  
+  <img src="DBLogo.svg" alt="DB" style="position:absolute;bottom:60px;right:60px;width:200px;height:200px;opacity:0.12;pointer-events:none;z-index:1;animation:slowSpin 40s linear infinite;">
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-eyebrow"><img src="DBLogo.svg" alt="" style="height:12px;width:12px;vertical-align:middle;margin-right:8px;filter:brightness(0) saturate(100%) invert(88%) sepia(60%) saturate(800%) hue-rotate(30deg) brightness(105%);">// BRAND ENGINEER + VISUAL ARTIST — EST. 2025</div>
+      <div class="hero-name"><span class="glitch" data-text="DAAN">DAAN</span><br><span class="glitch hero-name-green" data-text="BORGELING">BORGELING</span></div>
+      <div class="hero-desc">
+        Multidisciplinary artist working at the intersection of digital fabrication, speculative design, and systems thinking. Based in Amsterdam — working globally.
+      </div>
+      <div class="hero-actions">
+        <a href="#work" class="btn btn-primary">VIEW WORK →</a>
+        <a href="#contact" class="btn btn-ghost">GET IN TOUCH</a>
+      </div>
+    </div>
+
+    <!-- ─── MARATHON HUD ─── -->
+    <div class="hero-hud">
+
+      <div class="hud-block">
+        <div class="hud-label">// OPERATOR ID</div>
+        <div class="hud-row">
+          <div class="hud-value">DB-0042</div>
+          <div class="hud-value dim">DAAN BORGELING</div>
+        </div>
+        <div class="hud-row">
+          <div class="hud-value dim">NODE &gt;&gt; AMS-NL-03</div>
+          <div class="hud-value dim" id="hud-time">--:--:--</div>
+        </div>
+        <div class="hud-ticker">SYS.ONLINE &nbsp;▸&nbsp; LINK ESTABLISHED &nbsp;▸&nbsp; READY<span class="hud-blink">_</span></div>
+      </div>
+
+      <div class="hud-block">
+        <div class="hud-label">// DISCIPLINE LOAD</div>
+        <div class="hud-bar-wrap">
+          <div class="hud-bar-row">
+            <span class="hud-bar-label">BRAND ENG</span>
+            <div class="hud-bar-track"><div class="hud-bar-fill" style="width:0%" data-target="92%"></div></div>
+            <span class="hud-value dim">92</span>
+          </div>
+          <div class="hud-bar-row">
+            <span class="hud-bar-label">MOTION</span>
+            <div class="hud-bar-track"><div class="hud-bar-fill" style="width:0%" data-target="78%"></div></div>
+            <span class="hud-value dim">78</span>
+          </div>
+          <div class="hud-bar-row">
+            <span class="hud-bar-label">PRINT</span>
+            <div class="hud-bar-track"><div class="hud-bar-fill" style="width:0%" data-target="85%"></div></div>
+            <span class="hud-value dim">85</span>
+          </div>
+          <div class="hud-bar-row">
+            <span class="hud-bar-label">INSTALL</span>
+            <div class="hud-bar-track"><div class="hud-bar-fill" style="width:0%" data-target="60%"></div></div>
+            <span class="hud-value dim">60</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hud-block">
+        <div class="hud-label">// SYSTEM STATUS</div>
+        <div class="hud-row">
+          <div class="hud-value"><span class="hud-status-dot"></span>AVAILABLE FOR WORK</div>
+        </div>
+        <div class="hud-row">
+          <div class="hud-value dim">UPTIME &nbsp;&nbsp;</div>
+          <div class="hud-value" id="hud-uptime">0D 00:00:00</div>
+        </div>
+        <div class="hud-row">
+          <div class="hud-value dim">PROJECTS &nbsp;</div>
+          <div class="hud-value">084 LOGGED</div>
+        </div>
+        <div class="hud-row">
+          <div class="hud-value dim">LOCATION &nbsp;</div>
+          <div class="hud-value">52.3°N 4.9°E</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    SCROLL
+  </div>
+</section>
+
+<!-- ─── MARQUEE ─── -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span>DIGITAL ART</span><span class="accent">✦</span>
+    <span>PRINT DESIGN</span><span class="accent">✦</span>
+    <span>MOTION</span><span class="accent">✦</span>
+    <span>INSTALLATIONS</span><span class="accent">✦</span>
+    <span>BRANDING</span><span class="accent">✦</span>
+    <span>EDITORIAL</span><span class="accent">✦</span>
+    <span>PHOTOGRAPHY</span><span class="accent">✦</span>
+    <span>DIGITAL ART</span><span class="accent">✦</span>
+    <span>PRINT DESIGN</span><span class="accent">✦</span>
+    <span>MOTION</span><span class="accent">✦</span>
+    <span>INSTALLATIONS</span><span class="accent">✦</span>
+    <span>BRANDING</span><span class="accent">✦</span>
+    <span>EDITORIAL</span><span class="accent">✦</span>
+    <span>PHOTOGRAPHY</span><span class="accent">✦</span>
+  </div>
+</div>
+
+<!-- ─── WORK ─── -->
+<section id="work">
+  <div class="section-header">
+    <div>
+      <div class="section-label">// SELECTED WORK 2021–2024</div>
+      <div class="section-title">PROJECTS</div>
+    </div>
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">ALL</button>
+      <button class="filter-btn" data-filter="digital">DIGITAL</button>
+      <button class="filter-btn" data-filter="print">PRINT</button>
+      <button class="filter-btn" data-filter="motion">MOTION</button>
+      <button class="filter-btn" data-filter="install">INSTALL</button>
+    </div>
+  </div>
+
+  <div class="work-grid" id="work-grid">
+
+    <div class="work-card col-8" data-cat="digital" data-title="ECHOES OF STATIC" data-year="2024" data-cat-label="DIGITAL" data-desc="A generative series exploring data degradation as aesthetic. Each frame computed from corrupted signal feeds, rendered at 8K." onclick="openLightbox(this)">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="work-img-wrap"><div class="work-img art-1"></div></div>
+      <div class="work-overlay">
+        <div class="work-num">01</div>
+        <div class="work-title">ECHOES OF STATIC</div>
+        <div class="work-meta">2024 — DIGITAL</div>
+        <div class="work-tag">GENERATIVE</div>
+      </div>
+    </div>
+
+    <div class="work-card col-4" data-cat="print" data-title="MASS REDUCTION" data-year="2023" data-cat-label="PRINT" data-desc="Typographic poster series for a speculative industrial brand. Printed on uncoated 300gsm stock using two-colour risograph." onclick="openLightbox(this)">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="work-img-wrap"><div class="work-img art-2"></div></div>
+      <div class="work-overlay">
+        <div class="work-num">02</div>
+        <div class="work-title">MASS REDUCTION</div>
+        <div class="work-meta">2023 — PRINT</div>
+        <div class="work-tag">RISOGRAPH</div>
+      </div>
+    </div>
+
+    <div class="work-card col-4" data-cat="install" data-title="NULL SPACE" data-year="2023" data-cat-label="INSTALLATION" data-desc="Site-specific installation at Amsterdam Light Festival. Laser-cut steel mesh panels with reactive LED matrix, responding to ambient sound." onclick="openLightbox(this)">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="work-img-wrap"><div class="work-img art-3"></div></div>
+      <div class="work-overlay">
+        <div class="work-num">03</div>
+        <div class="work-title">NULL SPACE</div>
+        <div class="work-meta">2023 — INSTALLATION</div>
+        <div class="work-tag">REACTIVE</div>
+      </div>
+    </div>
+
+    <div class="work-card col-4" data-cat="motion" data-title="TERMINAL FLUX" data-year="2024" data-cat-label="MOTION" data-desc="45-second title sequence for a speculative documentary. Hand-drawn frame overlays composited over glitched 16mm footage." onclick="openLightbox(this)">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="work-img-wrap"><div class="work-img art-4"></div></div>
+      <div class="work-overlay">
+        <div class="work-num">04</div>
+        <div class="work-title">TERMINAL FLUX</div>
+        <div class="work-meta">2024 — MOTION</div>
+        <div class="work-tag">FILM TITLE</div>
+      </div>
+    </div>
+
+    <div class="work-card col-4" data-cat="digital" data-title="SECTOR GRID" data-year="2022" data-cat-label="DIGITAL" data-desc="A long-form algorithmic artwork in 99 parts. Each piece generated from a unique entropy seed, no two alike. Sold as open edition NFTs." onclick="openLightbox(this)">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="work-img-wrap"><div class="work-img art-5"></div></div>
+      <div class="work-overlay">
+        <div class="work-num">05</div>
+        <div class="work-title">SECTOR GRID</div>
+        <div class="work-meta">2022 — DIGITAL</div>
+        <div class="work-tag">ALGORITHMIC</div>
+      </div>
+    </div>
+
+    <div class="work-card col-4" data-cat="print" data-title="FOLD STUDIES" data-year="2022" data-cat-label="PRINT" data-desc="Ongoing exploration of origami mathematics applied to graphic design. Book of 32 diagrams, silkscreened on hand-folded sheets." onclick="openLightbox(this)">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="work-img-wrap"><div class="work-img art-6"></div></div>
+      <div class="work-overlay">
+        <div class="work-num">06</div>
+        <div class="work-title">FOLD STUDIES</div>
+        <div class="work-meta">2022 — PRINT</div>
+        <div class="work-tag">SILKSCREEN</div>
+      </div>
+    </div>
+
+    <div class="work-card col-7" data-cat="motion" data-title="SIGNAL DECAY" data-year="2021" data-cat-label="MOTION" data-desc="3-minute experimental film exploring entropy and signal loss. Created entirely in TouchDesigner, premiered at STRP Biennial." onclick="openLightbox(this)">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="work-img-wrap"><div class="work-img art-7"></div></div>
+      <div class="work-overlay">
+        <div class="work-num">07</div>
+        <div class="work-title">SIGNAL DECAY</div>
+        <div class="work-meta">2021 — MOTION</div>
+        <div class="work-tag">EXPERIMENTAL</div>
+      </div>
+    </div>
+
+    <div class="work-card col-5" data-cat="install" data-title="DEEP FIELD" data-year="2021" data-cat-label="INSTALLATION" data-desc="Projection-mapped installation responding to seismic data in real time. Collaboration with geophysics lab, shown at Ars Electronica." onclick="openLightbox(this)">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="work-img-wrap"><div class="work-img art-8"></div></div>
+      <div class="work-overlay">
+        <div class="work-num">08</div>
+        <div class="work-title">DEEP FIELD</div>
+        <div class="work-meta">2021 — INSTALLATION</div>
+        <div class="work-tag">PROJECTION</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+  <div class="section-header">
+    <div>
+      <div class="section-label">// ABOUT THE ARTIST</div>
+      <div class="section-title">PROCESS</div>
+    </div>
+  </div>
+  <div class="about-grid">
+    <div class="about-left">
+      <div class="about-text">
+        <p>I work across <strong>digital, print, and physical installation</strong> — treating each medium not as a constraint but as a set of rules to break intentionally.</p>
+        <p>My practice is grounded in <strong>systems thinking</strong>: what happens when you subject any system to extreme conditions? Entropy, degradation, and structural failure interest me as much as polish.</p>
+        <p>Clients and collaborators have included speculative architecture studios, experimental music labels, fashion houses, and cultural institutions across Europe and Asia.</p>
+        <p>I believe the best design is <strong>slightly wrong on purpose</strong>.</p>
+      </div>
+      <div class="about-stats">
+        <div class="about-stat">
+          <div class="stat-num">6+</div>
+          <div class="stat-label">Years active</div>
+        </div>
+        <div class="about-stat">
+          <div class="stat-num">84</div>
+          <div class="stat-label">Projects completed</div>
+        </div>
+        <div class="about-stat">
+          <div class="stat-num">14</div>
+          <div class="stat-label">Countries exhibited</div>
+        </div>
+        <div class="about-stat">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Awards won</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="section-label" style="margin-bottom:16px;">// TOOLS + DISCIPLINES</div>
+      <div class="skills-list">
+        <div class="skill-row"><div class="skill-name">TOUCHDESIGNER</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:92%"></div></div><div class="skill-pct">92%</div></div>
+        <div class="skill-row"><div class="skill-name">AFTER EFFECTS</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:88%"></div></div><div class="skill-pct">88%</div></div>
+        <div class="skill-row"><div class="skill-name">RISOGRAPH</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:80%"></div></div><div class="skill-pct">80%</div></div>
+        <div class="skill-row"><div class="skill-name">3D / BLENDER</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:74%"></div></div><div class="skill-pct">74%</div></div>
+        <div class="skill-row"><div class="skill-name">ARDUINO / IOT</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:65%"></div></div><div class="skill-pct">65%</div></div>
+        <div class="skill-row"><div class="skill-name">CREATIVE CODE</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:78%"></div></div><div class="skill-pct">78%</div></div>
+        <div class="skill-row"><div class="skill-name">SILKSCREEN</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:60%"></div></div><div class="skill-pct">60%</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="contact-title"><span class="glitch" data-text="LET'S MAKE">LET'S MAKE</span><br><span class="glitch contact-title-green" data-text="SOMETHING.">SOMETHING.</span></div>
+  <div class="contact-sub">// OPEN TO COLLABORATIONS, COMMISSIONS + RESIDENCIES</div>
+  <div class="contact-links">
+    <a href="#" class="contact-link">
+      <div class="cl-label">EMAIL</div>
+      <div class="cl-val"><span class="__cf_email__" data-cfemail="dc94999090939c8593898e929d9199f29f9391">[email&#160;protected]</span></div>
+    </a>
+    <a href="#" class="contact-link">
+      <div class="cl-label">INSTAGRAM</div>
+      <div class="cl-val">@YOURHANDLE</div>
+    </a>
+    <a href="#" class="contact-link">
+      <div class="cl-label">LOCATION</div>
+      <div class="cl-val">AMSTERDAM, NL</div>
+    </a>
+    <a href="#" class="contact-link">
+      <div class="cl-label">AVAILABILITY</div>
+      <div class="cl-val" style="color:var(--green);">Q3 2025</div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <img src="DBLogo.svg" alt="DB" style="height:16px;width:16px;vertical-align:middle;margin-right:8px;opacity:0.5;"> // PORTFOLIO — ALL WORK © DAAN BÖRGELING 2025
+  <div>BUILT WITH BRUTALITY + INTENTION</div>
+</footer>
+
+<!-- ─── LIGHTBOX ─── -->
+<div id="lightbox" onclick="closeLightboxOutside(event)">
+  <div class="lb-inner">
+    <div class="lb-header">
+      <div>
+        <div class="lb-title" id="lb-title">TITLE</div>
+        <div class="lb-meta" id="lb-meta">2024 — CATEGORY</div>
+      </div>
+      <button class="lb-close" onclick="closeLightbox()">✕ CLOSE</button>
+    </div>
+    <div class="lb-img">
+      <div class="lb-img-fill" id="lb-img"></div>
+    </div>
+    <div class="lb-footer">
+      <div class="lb-desc" id="lb-desc"></div>
+      <div class="lb-nav">
+        <button class="lb-nav-btn" onclick="lbNav(-1)">← PREV</button>
+        <button class="lb-nav-btn" onclick="lbNav(1)">NEXT →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── HUD LIVE DATA ───
+(function() {
+  const start = Date.now();
+
+  // Animate bars on load
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      document.querySelectorAll('.hud-bar-fill').forEach(bar => {
+        bar.style.width = bar.dataset.target || '0%';
+      });
+    }, 800);
+  });
+
+  // Live clock + uptime
+  function pad(n) { return String(n).padStart(2,'0'); }
+  function tick() {
+    const now = new Date();
+    const timeEl = document.getElementById('hud-time');
+    const uptimeEl = document.getElementById('hud-uptime');
+    if (timeEl) timeEl.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    if (uptimeEl) {
+      const elapsed = Math.floor((Date.now() - start) / 1000);
+      const d = Math.floor(elapsed / 86400);
+      const h = Math.floor((elapsed % 86400) / 3600);
+      const m = Math.floor((elapsed % 3600) / 60);
+      const s = elapsed % 60;
+      uptimeEl.textContent = `${d}D ${pad(h)}:${pad(m)}:${pad(s)}`;
+    }
+  }
+  setInterval(tick, 1000);
+  tick();
+})();
+
+// ─── FILTER ───
+const filterBtns = document.querySelectorAll('.filter-btn');
+const cards = document.querySelectorAll('.work-card');
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    cards.forEach(card => {
+      const match = f === 'all' || card.dataset.cat === f;
+      card.classList.toggle('hidden', !match);
+    });
+  });
+});
+
+// ─── LIGHTBOX ───
+const works = Array.from(cards);
+let currentIdx = 0;
+
+const artClasses = ['art-1','art-2','art-3','art-4','art-5','art-6','art-7','art-8'];
+
+function openLightbox(card) {
+  currentIdx = works.indexOf(card);
+  loadLightbox(card);
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function loadLightbox(card) {
+  document.getElementById('lb-title').textContent = card.dataset.title;
+  document.getElementById('lb-meta').textContent = card.dataset.year + ' — ' + card.dataset.catLabel;
+  document.getElementById('lb-desc').textContent = card.dataset.desc;
+  const fill = document.getElementById('lb-img');
+  const artClass = card.querySelector('.work-img').className.replace('work-img','').trim();
+  fill.className = 'work-img-fill';
+  fill.style.width = '100%';
+  fill.style.height = '100%';
+  fill.style.aspectRatio = 'unset';
+  fill.classList.add(artClass);
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeLightboxOutside(e) {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+}
+
+function lbNav(dir) {
+  let next = currentIdx + dir;
+  if (next < 0) next = works.length - 1;
+  if (next >= works.length) next = 0;
+  currentIdx = next;
+  loadLightbox(works[currentIdx]);
+}
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key === 'ArrowLeft') lbNav(-1);
+});
+
+// ─── NAV ACTIVE ON SCROLL ───
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => {
+        
