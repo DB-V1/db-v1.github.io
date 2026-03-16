@@ -72,9 +72,9 @@ body {
 body::after {
   content: '';
   position: fixed; inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px);
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 4px);
   pointer-events: none;
-  z-index: 9000;
+  z-index: 501;
 }
 
 /* ─── NAV ─── */
@@ -817,13 +817,14 @@ section { padding: 100px 60px; }
 .contact-title {
   font-family: 'Maratype2', sans-serif;
   font-size: clamp(48px, 8vw, 100px);
-  letter-spacing: 6px;
-  line-height: 0.9;
+  letter-spacing: 16px;
+  line-height: 1.1;
   color: var(--text);
   margin-bottom: 24px;
 }
 
 .contact-title span { color: var(--green); }
+.contact-title-white { color: var(--text) !important; }
 .contact-title-green { color: var(--green); }
 
 .contact-sub {
@@ -889,104 +890,154 @@ footer span { color: var(--green); }
 
 /* ─── LIGHTBOX ─── */
 #lightbox {
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   z-index: 8000;
-  background: rgba(0,0,0,0.95);
+  background: rgba(0,0,0,0.92);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   pointer-events: none;
   transition: opacity .3s ease;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(4px);
 }
 
 #lightbox.open { opacity: 1; pointer-events: all; }
 
 .lb-inner {
-  max-width: 900px;
-  width: 90vw;
+  width: min(960px, 92vw);
   position: relative;
-  transform: scale(.92);
+  border: 1px solid rgba(194,254,11,0.3);
+  background: #080808;
+  transform: scale(.94) translateY(12px);
   transition: transform .3s ease;
 }
 
-#lightbox.open .lb-inner { transform: scale(1); }
+#lightbox.open .lb-inner { transform: scale(1) translateY(0); }
 
-.lb-header {
+.lb-inner::before, .lb-inner::after {
+  content: '';
+  position: absolute;
+  width: 16px; height: 16px;
+  border-color: var(--green);
+  border-style: solid;
+  pointer-events: none;
+}
+.lb-inner::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+.lb-inner::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+.lb-titlebar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0 16px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 16px;
+  padding: 8px 16px;
+  background: var(--green);
 }
 
-.lb-title {
-  font-family: 'Maratype2', sans-serif;
-  font-size: 28px;
-  letter-spacing: 4px;
-  color: var(--text);
-}
+.lb-titlebar-left { display: flex; align-items: center; gap: 10px; }
+.lb-titlebar-dots { display: flex; gap: 5px; }
+.lb-dot { width: 8px; height: 8px; background: rgba(0,0,0,0.3); }
 
-.lb-meta { font-size: 10px; letter-spacing: 2px; color: var(--green); }
-
-.lb-close {
+.lb-titlebar-label {
   font-family: 'DOTMatrix', sans-serif;
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 10px;
+  font-weight: bold;
   letter-spacing: 3px;
+  color: #000;
+}
+
+.lb-titlebar-close {
+  font-family: 'DOTMatrix', sans-serif;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 2px;
   background: transparent;
-  color: var(--muted);
-  border: 1px solid var(--border);
-  padding: 8px 14px;
+  color: #000;
+  border: 1px solid rgba(0,0,0,0.3);
+  padding: 3px 10px;
   transition: all .15s;
 }
-
-.lb-close:hover { border-color: var(--red); color: var(--red); }
+.lb-titlebar-close:hover { background: #000; color: var(--green); border-color: #000; }
 
 .lb-img {
   width: 100%;
   aspect-ratio: 16/9;
   position: relative;
-  border: 1px solid var(--border);
   overflow: hidden;
+  border-bottom: 1px solid var(--border);
 }
 
 .lb-img-fill {
   width: 100%; height: 100%;
   transition: transform .4s ease;
 }
+.lb-img:hover .lb-img-fill { transform: scale(1.02); }
 
-.lb-img:hover .lb-img-fill { transform: scale(1.03); }
+.lb-statusbar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 6px 16px;
+  background: #0a0a0a;
+  border-bottom: 1px solid var(--border);
+}
+
+.lb-status-item {
+  font-family: 'UAV-OSD-Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: rgba(194,254,11,0.4);
+}
+.lb-status-item span { color: var(--green); }
 
 .lb-footer {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
+  gap: 24px;
+  padding: 16px 16px 20px;
 }
 
-.lb-desc { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; line-height: 1.6; max-width: 500px; }
+.lb-title {
+  font-family: 'Maratype2', sans-serif;
+  font-size: 26px;
+  letter-spacing: 4px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
 
-.lb-nav { display: flex; gap: 8px; }
+.lb-meta { font-size: 9px; letter-spacing: 3px; color: var(--green); margin-bottom: 10px; }
+
+.lb-desc {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  line-height: 1.7;
+  max-width: 500px;
+}
+
+.lb-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+  align-self: center;
+}
 
 .lb-nav-btn {
   font-family: 'DOTMatrix', sans-serif;
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 11px;
+  font-weight: bold;
   letter-spacing: 2px;
   background: transparent;
   color: var(--text);
   border: 1px solid var(--border);
-  padding: 8px 18px;
+  padding: 8px 20px;
   transition: all .15s;
+  white-space: nowrap;
 }
-
 .lb-nav-btn:hover { border-color: var(--green); color: var(--green); }
+
 
 /* ─── GLITCH text effect ─── */
 .glitch {
@@ -1203,7 +1254,7 @@ window.addEventListener('DOMContentLoaded', () => {
       <div class="hero-eyebrow"><img src="DBLogo.svg" alt="" style="height:12px;width:12px;vertical-align:middle;margin-right:8px;filter:brightness(0) saturate(100%) invert(88%) sepia(60%) saturate(800%) hue-rotate(30deg) brightness(105%);">// BRAND ENGINEER + VISUAL ARTIST — EST. 2025</div>
       <div class="hero-name"><span class="glitch" data-text="DAAN">DAAN</span><br><span class="glitch hero-name-green" data-text="BORGELING">BORGELING</span></div>
       <div class="hero-desc">
-        Multidisciplinary artist working at the intersection of digital fabrication, speculative design, and systems thinking. Based in The Netherlands — working globally.
+        Multidisciplinary artist focused on modern, sharp, and graphic realism design. Based in The Netherlands — working globally.
       </div>
       <div class="hero-actions">
         <a href="#work" class="btn btn-primary">VIEW WORK →</a>
@@ -1231,24 +1282,24 @@ window.addEventListener('DOMContentLoaded', () => {
         <div class="hud-label">// DISCIPLINE LOAD</div>
         <div class="hud-bar-wrap">
           <div class="hud-bar-row">
-            <span class="hud-bar-label">BRAND ENG</span>
-            <div class="hud-bar-track"><div class="hud-bar-fill" style="width:0%" data-target="92%"></div></div>
-            <span class="hud-value dim">92</span>
-          </div>
-          <div class="hud-bar-row">
-            <span class="hud-bar-label">MOTION</span>
-            <div class="hud-bar-track"><div class="hud-bar-fill" style="width:0%" data-target="78%"></div></div>
-            <span class="hud-value dim">78</span>
-          </div>
-          <div class="hud-bar-row">
-            <span class="hud-bar-label">PRINT</span>
+            <span class="hud-bar-label">3D / BLEND</span>
             <div class="hud-bar-track"><div class="hud-bar-fill" style="width:0%" data-target="85%"></div></div>
             <span class="hud-value dim">85</span>
           </div>
           <div class="hud-bar-row">
-            <span class="hud-bar-label">INSTALL</span>
-            <div class="hud-bar-track"><div class="hud-bar-fill" style="width:0%" data-target="60%"></div></div>
-            <span class="hud-value dim">60</span>
+            <span class="hud-bar-label">PHOTOSHOP</span>
+            <div class="hud-bar-track"><div class="hud-bar-fill" style="width:0%" data-target="90%"></div></div>
+            <span class="hud-value dim">90</span>
+          </div>
+          <div class="hud-bar-row">
+            <span class="hud-bar-label">VECTOR</span>
+            <div class="hud-bar-track"><div class="hud-bar-fill" style="width:0%" data-target="88%"></div></div>
+            <span class="hud-value dim">88</span>
+          </div>
+          <div class="hud-bar-row">
+            <span class="hud-bar-label">BRANDING</span>
+            <div class="hud-bar-track"><div class="hud-bar-fill" style="width:0%" data-target="80%"></div></div>
+            <span class="hud-value dim">80</span>
           </div>
         </div>
       </div>
@@ -1318,91 +1369,91 @@ window.addEventListener('DOMContentLoaded', () => {
 
   <div class="work-grid" id="work-grid">
 
-    <div class="work-card col-8" data-cat="digital" data-title="DISTANT WORLDS" data-year="2025" data-cat-label="DIGITAL" data-img="distantworlds.png" data-desc="A speculative 3D render exploring alien landscapes — distant pyramids, twin moons, and brutalist structures reflected in still water on an unknown planet." onclick="openLightbox(this)">
+    <div class="work-card col-8" data-cat="digital" data-title="DISTANT WORLDS" data-year="2026" data-cat-label="DIGITAL" data-img="distantworlds.png" data-desc="A speculative 3D render exploring alien landscapes — distant pyramids, twin moons, and brutalist structures reflected in still water on an unknown planet." onclick="openLightbox(this)">
       <div class="corner-tl"></div><div class="corner-br"></div>
       <div class="work-img-wrap"><div class="work-img art-1" style="background-image:url('distantworlds.png');background-size:cover;background-position:center;"></div></div>
       <div class="work-overlay">
         <div class="work-num">01</div>
         <div class="work-title">DISTANT WORLDS</div>
-        <div class="work-meta">2025 — DIGITAL</div>
+        <div class="work-meta">2026 — DIGITAL</div>
         <div class="work-tag">3D / RENDER</div>
       </div>
     </div>
 
-    <div class="work-card col-4" data-cat="print" data-title="MASS REDUCTION" data-year="2023" data-cat-label="PRINT" data-desc="Typographic poster series for a speculative industrial brand. Printed on uncoated 300gsm stock using two-colour risograph." onclick="openLightbox(this)">
+    <div class="work-card col-4" data-cat="print" data-title="[REDACTED]" data-year="——" data-cat-label="PRINT" data-desc="[REDACTED]" onclick="openLightbox(this)">
       <div class="corner-tl"></div><div class="corner-br"></div>
       <div class="work-img-wrap"><div class="work-img art-2"></div></div>
       <div class="work-overlay">
         <div class="work-num">02</div>
-        <div class="work-title">MASS REDUCTION</div>
-        <div class="work-meta">2023 — PRINT</div>
-        <div class="work-tag">RISOGRAPH</div>
+        <div class="work-title">[REDACTED]</div>
+        <div class="work-meta">—— — PRINT</div>
+        <div class="work-tag">COMING SOON</div>
       </div>
     </div>
 
-    <div class="work-card col-4" data-cat="install" data-title="NULL SPACE" data-year="2023" data-cat-label="INSTALLATION" data-desc="Site-specific installation at Amsterdam Light Festival. Laser-cut steel mesh panels with reactive LED matrix, responding to ambient sound." onclick="openLightbox(this)">
+    <div class="work-card col-4" data-cat="install" data-title="[REDACTED]" data-year="——" data-cat-label="INSTALLATION" data-desc="[REDACTED]" onclick="openLightbox(this)">
       <div class="corner-tl"></div><div class="corner-br"></div>
       <div class="work-img-wrap"><div class="work-img art-3"></div></div>
       <div class="work-overlay">
         <div class="work-num">03</div>
-        <div class="work-title">NULL SPACE</div>
-        <div class="work-meta">2023 — INSTALLATION</div>
-        <div class="work-tag">REACTIVE</div>
+        <div class="work-title">[REDACTED]</div>
+        <div class="work-meta">—— — INSTALLATION</div>
+        <div class="work-tag">COMING SOON</div>
       </div>
     </div>
 
-    <div class="work-card col-4" data-cat="motion" data-title="TERMINAL FLUX" data-year="2024" data-cat-label="MOTION" data-desc="45-second title sequence for a speculative documentary. Hand-drawn frame overlays composited over glitched 16mm footage." onclick="openLightbox(this)">
+    <div class="work-card col-4" data-cat="motion" data-title="[REDACTED]" data-year="——" data-cat-label="MOTION" data-desc="[REDACTED]" onclick="openLightbox(this)">
       <div class="corner-tl"></div><div class="corner-br"></div>
       <div class="work-img-wrap"><div class="work-img art-4"></div></div>
       <div class="work-overlay">
         <div class="work-num">04</div>
-        <div class="work-title">TERMINAL FLUX</div>
-        <div class="work-meta">2024 — MOTION</div>
-        <div class="work-tag">FILM TITLE</div>
+        <div class="work-title">[REDACTED]</div>
+        <div class="work-meta">—— — MOTION</div>
+        <div class="work-tag">COMING SOON</div>
       </div>
     </div>
 
-    <div class="work-card col-4" data-cat="digital" data-title="SECTOR GRID" data-year="2022" data-cat-label="DIGITAL" data-desc="A long-form algorithmic artwork in 99 parts. Each piece generated from a unique entropy seed, no two alike. Sold as open edition NFTs." onclick="openLightbox(this)">
+    <div class="work-card col-4" data-cat="digital" data-title="[REDACTED]" data-year="——" data-cat-label="DIGITAL" data-desc="[REDACTED]" onclick="openLightbox(this)">
       <div class="corner-tl"></div><div class="corner-br"></div>
       <div class="work-img-wrap"><div class="work-img art-5"></div></div>
       <div class="work-overlay">
         <div class="work-num">05</div>
-        <div class="work-title">SECTOR GRID</div>
-        <div class="work-meta">2022 — DIGITAL</div>
-        <div class="work-tag">ALGORITHMIC</div>
+        <div class="work-title">[REDACTED]</div>
+        <div class="work-meta">—— — DIGITAL</div>
+        <div class="work-tag">COMING SOON</div>
       </div>
     </div>
 
-    <div class="work-card col-4" data-cat="print" data-title="FOLD STUDIES" data-year="2022" data-cat-label="PRINT" data-desc="Ongoing exploration of origami mathematics applied to graphic design. Book of 32 diagrams, silkscreened on hand-folded sheets." onclick="openLightbox(this)">
+    <div class="work-card col-4" data-cat="print" data-title="[REDACTED]" data-year="——" data-cat-label="PRINT" data-desc="[REDACTED]" onclick="openLightbox(this)">
       <div class="corner-tl"></div><div class="corner-br"></div>
       <div class="work-img-wrap"><div class="work-img art-6"></div></div>
       <div class="work-overlay">
         <div class="work-num">06</div>
-        <div class="work-title">FOLD STUDIES</div>
-        <div class="work-meta">2022 — PRINT</div>
-        <div class="work-tag">SILKSCREEN</div>
+        <div class="work-title">[REDACTED]</div>
+        <div class="work-meta">—— — PRINT</div>
+        <div class="work-tag">COMING SOON</div>
       </div>
     </div>
 
-    <div class="work-card col-7" data-cat="motion" data-title="SIGNAL DECAY" data-year="2021" data-cat-label="MOTION" data-desc="3-minute experimental film exploring entropy and signal loss. Created entirely in TouchDesigner, premiered at STRP Biennial." onclick="openLightbox(this)">
+    <div class="work-card col-7" data-cat="motion" data-title="[REDACTED]" data-year="——" data-cat-label="MOTION" data-desc="[REDACTED]" onclick="openLightbox(this)">
       <div class="corner-tl"></div><div class="corner-br"></div>
       <div class="work-img-wrap"><div class="work-img art-7"></div></div>
       <div class="work-overlay">
         <div class="work-num">07</div>
-        <div class="work-title">SIGNAL DECAY</div>
-        <div class="work-meta">2021 — MOTION</div>
-        <div class="work-tag">EXPERIMENTAL</div>
+        <div class="work-title">[REDACTED]</div>
+        <div class="work-meta">—— — MOTION</div>
+        <div class="work-tag">COMING SOON</div>
       </div>
     </div>
 
-    <div class="work-card col-5" data-cat="install" data-title="DEEP FIELD" data-year="2021" data-cat-label="INSTALLATION" data-desc="Projection-mapped installation responding to seismic data in real time. Collaboration with geophysics lab, shown at Ars Electronica." onclick="openLightbox(this)">
+    <div class="work-card col-5" data-cat="install" data-title="[REDACTED]" data-year="——" data-cat-label="INSTALLATION" data-desc="[REDACTED]" onclick="openLightbox(this)">
       <div class="corner-tl"></div><div class="corner-br"></div>
       <div class="work-img-wrap"><div class="work-img art-8"></div></div>
       <div class="work-overlay">
         <div class="work-num">08</div>
-        <div class="work-title">DEEP FIELD</div>
-        <div class="work-meta">2021 — INSTALLATION</div>
-        <div class="work-tag">PROJECTION</div>
+        <div class="work-title">[REDACTED]</div>
+        <div class="work-meta">—— — INSTALLATION</div>
+        <div class="work-tag">COMING SOON</div>
       </div>
     </div>
 
@@ -1420,8 +1471,8 @@ window.addEventListener('DOMContentLoaded', () => {
   <div class="about-grid">
     <div class="about-left">
       <div class="about-text">
-        <p>I work across <strong>digital, print, and physical installation</strong> — treating each medium not as a constraint but as a set of rules to break intentionally.</p>
-        <p>My practice is grounded in <strong>systems thinking</strong>: what happens when you subject any system to extreme conditions? Entropy, degradation, and structural failure interest me as much as polish.</p>
+        <p><strong>DEFINE, THEN BUILD.</strong><br>Every project starts with intent — what needs to exist and why. Once the concept is locked, I work out the parts: forms, type, composition. Each element earns its place before anything gets finalised.</p>
+        <p><strong>PRESSURE TEST, THEN CUT.</strong><br>I run concepts through scenarios until they hold up at any scale. Then I strip everything that doesn't pull weight. Simplicity is the goal — but never at the cost of the idea.</p>
         <p>I believe the best design is <strong>slightly wrong on purpose</strong>.</p>
       </div>
       <div class="about-stats">
@@ -1433,26 +1484,16 @@ window.addEventListener('DOMContentLoaded', () => {
           <div class="stat-num">8</div>
           <div class="stat-label">Projects completed</div>
         </div>
-        <div class="about-stat">
-          <div class="stat-num">0</div>
-          <div class="stat-label">Countries exhibited</div>
-        </div>
-        <div class="about-stat">
-          <div class="stat-num">0</div>
-          <div class="stat-label">Awards won</div>
-        </div>
       </div>
     </div>
     <div class="about-right">
       <div class="section-label" style="margin-bottom:16px;">// TOOLS + DISCIPLINES</div>
       <div class="skills-list">
-        <div class="skill-row"><div class="skill-name">TOUCHDESIGNER</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:92%"></div></div><div class="skill-pct">92%</div></div>
-        <div class="skill-row"><div class="skill-name">AFTER EFFECTS</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:88%"></div></div><div class="skill-pct">88%</div></div>
-        <div class="skill-row"><div class="skill-name">RISOGRAPH</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:80%"></div></div><div class="skill-pct">80%</div></div>
-        <div class="skill-row"><div class="skill-name">3D / BLENDER</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:74%"></div></div><div class="skill-pct">74%</div></div>
-        <div class="skill-row"><div class="skill-name">ARDUINO / IOT</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:65%"></div></div><div class="skill-pct">65%</div></div>
-        <div class="skill-row"><div class="skill-name">CREATIVE CODE</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:78%"></div></div><div class="skill-pct">78%</div></div>
-        <div class="skill-row"><div class="skill-name">SILKSCREEN</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:60%"></div></div><div class="skill-pct">60%</div></div>
+        <div class="skill-row"><div class="skill-name">3D / BLENDER</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:85%"></div></div><div class="skill-pct">85%</div></div>
+        <div class="skill-row"><div class="skill-name">PHOTOSHOP</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:90%"></div></div><div class="skill-pct">90%</div></div>
+        <div class="skill-row"><div class="skill-name">AFFINITY</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:85%"></div></div><div class="skill-pct">85%</div></div>
+        <div class="skill-row"><div class="skill-name">VECTOR ART</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:88%"></div></div><div class="skill-pct">88%</div></div>
+        <div class="skill-row"><div class="skill-name">BRANDING</div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:80%"></div></div><div class="skill-pct">80%</div></div>
       </div>
     </div>
   </div>
@@ -1460,7 +1501,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 <!-- ─── CONTACT ─── -->
 <section id="contact">
-  <div class="contact-title"><span class="glitch" data-text="LET'S MAKE">LET'S MAKE</span><br><span class="glitch contact-title-green" data-text="SOMETHING.">SOMETHING.</span></div>
+  <div class="contact-title"><span class="glitch contact-title-white" data-text="LET'S MAKE">LET'S MAKE</span><br><span class="glitch contact-title-green" data-text="SOMETHING.">SOMETHING.</span></div>
   <div class="contact-sub">// OPEN TO COLLABORATIONS, COMMISSIONS + RESIDENCIES</div>
   <div class="contact-links">
     <a href="#" class="contact-link">
@@ -1477,7 +1518,7 @@ window.addEventListener('DOMContentLoaded', () => {
     </a>
     <a href="#" class="contact-link">
       <div class="cl-label">AVAILABILITY</div>
-      <div class="cl-val" style="color:var(--green);">Q3 2025</div>
+      <div class="cl-val" style="color:var(--green);">Q3 2026</div>
     </a>
   </div>
 </section>
@@ -1490,23 +1531,46 @@ window.addEventListener('DOMContentLoaded', () => {
 <!-- ─── LIGHTBOX ─── -->
 <div id="lightbox" onclick="closeLightboxOutside(event)">
   <div class="lb-inner">
-    <div class="lb-header">
-      <div>
-        <div class="lb-title" id="lb-title">TITLE</div>
-        <div class="lb-meta" id="lb-meta">2024 — CATEGORY</div>
+
+    <!-- title bar -->
+    <div class="lb-titlebar">
+      <div class="lb-titlebar-left">
+        <div class="lb-titlebar-dots">
+          <div class="lb-dot"></div>
+          <div class="lb-dot"></div>
+          <div class="lb-dot"></div>
+        </div>
+        <div class="lb-titlebar-label">// ARCHIVE VIEWER — DB-0042</div>
       </div>
-      <button class="lb-close" onclick="closeLightbox()">✕ CLOSE</button>
+      <button class="lb-titlebar-close" onclick="closeLightbox()">✕ CLOSE</button>
     </div>
+
+    <!-- image -->
     <div class="lb-img">
       <div class="lb-img-fill" id="lb-img"></div>
     </div>
+
+    <!-- status bar -->
+    <div class="lb-statusbar">
+      <div class="lb-status-item">FILE <span id="lb-num">01/08</span></div>
+      <div class="lb-status-item">CAT <span id="lb-cat">——</span></div>
+      <div class="lb-status-item">YEAR <span id="lb-year">——</span></div>
+      <div class="lb-status-item">STATUS <span style="color:var(--green);">LOADED</span></div>
+    </div>
+
+    <!-- footer: info + nav -->
     <div class="lb-footer">
-      <div class="lb-desc" id="lb-desc"></div>
+      <div class="lb-info">
+        <div class="lb-title" id="lb-title">TITLE</div>
+        <div class="lb-meta" id="lb-meta">—— — ——</div>
+        <div class="lb-desc" id="lb-desc"></div>
+      </div>
       <div class="lb-nav">
         <button class="lb-nav-btn" onclick="lbNav(-1)">← PREV</button>
         <button class="lb-nav-btn" onclick="lbNav(1)">NEXT →</button>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -1577,6 +1641,11 @@ function loadLightbox(card) {
   document.getElementById('lb-title').textContent = card.dataset.title;
   document.getElementById('lb-meta').textContent = card.dataset.year + ' — ' + card.dataset.catLabel;
   document.getElementById('lb-desc').textContent = card.dataset.desc;
+  // status bar
+  const idx = works.indexOf(card);
+  document.getElementById('lb-num').textContent = String(idx + 1).padStart(2,'0') + '/' + String(works.length).padStart(2,'0');
+  document.getElementById('lb-cat').textContent = card.dataset.catLabel || '——';
+  document.getElementById('lb-year').textContent = card.dataset.year || '——';
   const fill = document.getElementById('lb-img');
   fill.className = 'work-img-fill';
   fill.style.width = '100%';
@@ -1629,3 +1698,14 @@ const obs = new IntersectionObserver(entries => {
     if (entry.isIntersecting) {
       navLinks.forEach(a => {
         
+        a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+
+sections.forEach(s => obs.observe(s));
+
+</script>
+</body>
+</html>
