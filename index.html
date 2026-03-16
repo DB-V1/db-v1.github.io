@@ -1318,14 +1318,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
   <div class="work-grid" id="work-grid">
 
-    <div class="work-card col-8" data-cat="digital" data-title="ECHOES OF STATIC" data-year="2024" data-cat-label="DIGITAL" data-desc="A generative series exploring data degradation as aesthetic. Each frame computed from corrupted signal feeds, rendered at 8K." onclick="openLightbox(this)">
+    <div class="work-card col-8" data-cat="digital" data-title="DISTANT WORLDS" data-year="2025" data-cat-label="DIGITAL" data-img="distantworlds.png" data-desc="A speculative 3D render exploring alien landscapes — distant pyramids, twin moons, and brutalist structures reflected in still water on an unknown planet." onclick="openLightbox(this)">
       <div class="corner-tl"></div><div class="corner-br"></div>
-      <div class="work-img-wrap"><div class="work-img art-1"></div></div>
+      <div class="work-img-wrap"><div class="work-img art-1" style="background-image:url('distantworlds.png');background-size:cover;background-position:center;"></div></div>
       <div class="work-overlay">
         <div class="work-num">01</div>
-        <div class="work-title">ECHOES OF STATIC</div>
-        <div class="work-meta">2024 — DIGITAL</div>
-        <div class="work-tag">GENERATIVE</div>
+        <div class="work-title">DISTANT WORLDS</div>
+        <div class="work-meta">2025 — DIGITAL</div>
+        <div class="work-tag">3D / RENDER</div>
       </div>
     </div>
 
@@ -1578,12 +1578,22 @@ function loadLightbox(card) {
   document.getElementById('lb-meta').textContent = card.dataset.year + ' — ' + card.dataset.catLabel;
   document.getElementById('lb-desc').textContent = card.dataset.desc;
   const fill = document.getElementById('lb-img');
-  const artClass = card.querySelector('.work-img').className.replace('work-img','').trim();
   fill.className = 'work-img-fill';
   fill.style.width = '100%';
   fill.style.height = '100%';
   fill.style.aspectRatio = 'unset';
-  fill.classList.add(artClass);
+  if (card.dataset.img) {
+    fill.style.backgroundImage = `url('${card.dataset.img}')`;
+    fill.style.backgroundSize = 'contain';
+    fill.style.backgroundPosition = 'center';
+    fill.style.backgroundRepeat = 'no-repeat';
+    fill.style.backgroundColor = '#000';
+  } else {
+    fill.style.backgroundImage = '';
+    fill.style.backgroundColor = '';
+    const artClass = card.querySelector('.work-img').className.replace('work-img','').trim();
+    fill.classList.add(artClass);
+  }
 }
 
 function closeLightbox() {
